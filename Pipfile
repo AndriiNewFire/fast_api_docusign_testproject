@@ -9,6 +9,7 @@ uvicorn = "*"
 jinja2 = "*"
 python-multipart = "*"
 requests = "*"
+fastapi-utils = "*"
 
 [dev-packages]
 

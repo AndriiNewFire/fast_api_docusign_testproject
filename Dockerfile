@@ -1,4 +1,4 @@
-FROM python:3.9-alpine
+FROM python:3.9-buster
 MAINTAINER Andrii Divnych
 
 ENV PYTHONUNBUFFERED 1
@@ -9,7 +9,6 @@ COPY ./Pipfile /Pipfile
 COPY ./Pipfile.lock /Pipfile.lock
 RUN pipenv install --system --deploy
 
-RUN mkdir /app
 WORKDIR /app
 COPY ./app /app
 

@@ -8,7 +8,7 @@ services:
       - "8000:8000"
     volumes:
       - ./app:/app
-    command: sh -c "python main.py"
+    command: sh -c "uvicorn main:app --reload"
     environment:
       - DB_HOST=db
       - DB_NAME=app
@@ -20,6 +20,8 @@ services:
   db:
     image: postgres:12-alpine
     restart: always
+    volumes:
+    - db_data
     environment:
       - POSTGRES_DB=app
       - POSTGRES_USER=andrii
