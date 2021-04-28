@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, Form
 from fastapi.templating import Jinja2Templates
 
 router = APIRouter()
-templates = Jinja2Templates('./app/addition/templates')
+templates = Jinja2Templates('./app/templates/addition')
 
 
 @router.get("/addition")
