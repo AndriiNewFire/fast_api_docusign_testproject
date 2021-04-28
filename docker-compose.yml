@@ -11,7 +11,7 @@ services:
     command: sh -c "uvicorn main:app --reload"
     environment:
       - DB_HOST=db
-      - DB_NAME=app
+      - DB_NAME=db
       - DB_USER=andrii
       - DB_PASS=password
     depends_on:
@@ -23,6 +23,6 @@ services:
     volumes:
     - db_data
     environment:
-      - POSTGRES_DB=app
+      - POSTGRES_DB=db
       - POSTGRES_USER=andrii
       - POSTGRES_PASSWORD=password

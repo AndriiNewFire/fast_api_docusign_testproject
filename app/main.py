@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+import os
 
 from api import (
     addition,
@@ -19,4 +20,5 @@ def configuration():
 app = configuration()
 
 if __name__ == "__main__":
+    print(os.environ)
     uvicorn.run(app, host="127.0.0.1", port=8000, debug=True)

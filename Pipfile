@@ -10,6 +10,9 @@ jinja2 = "*"
 python-multipart = "*"
 requests = "*"
 fastapi-utils = "*"
+alembic = "*"
+psycopg2-binary = "*"
+sqlalchemy = "*"
 
 [dev-packages]
 
