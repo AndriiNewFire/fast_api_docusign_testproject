@@ -14,7 +14,6 @@ class CitySchema(BaseModel):
         link = f"http://worldtimeapi.org/api/timezone/{self.timezone}"
 
         result = requests.get(link).json()
-
         # Receiving time
         time = result.get('datetime', 'Nothing found')
 
@@ -22,3 +21,4 @@ class CitySchema(BaseModel):
         cities_database.append({'name': self.name,
                                 'datetime': time,
                                 })
+        return time
