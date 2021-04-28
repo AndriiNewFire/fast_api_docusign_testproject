@@ -1,17 +1,22 @@
 import uvicorn
 from fastapi import FastAPI
 
-from app.addition.routers import addition_router
-from app.current_time.routers import current_time_router
-
-app = FastAPI()
+from api import (
+    addition,
+    current_time,
+                )
 
 
 def configuration():
-    app.include_router(addition_router)
-    app.include_router(current_time_router)
+
+    app = FastAPI()
+    app.include_router(addition.router)
+    app.include_router(current_time.router)
+
+    return app
 
 
-configuration()
+app = configuration()
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000, debug=True)
