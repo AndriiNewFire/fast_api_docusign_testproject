@@ -1,4 +1,6 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+import datetime
+
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 
 from dependencies.db import Base
@@ -19,7 +21,8 @@ class Document(Base):
     __tablename__ = 'documents'
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
+    title = Column(String, default='Default Title', index=True)
+    date = Column(DateTime, default=datetime.datetime.utcnow)
     owner_id = Column(Integer, ForeignKey('users.id'))
 
     owner = relationship('users', back_populates='documents')
