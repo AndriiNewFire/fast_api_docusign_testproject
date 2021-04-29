@@ -29,8 +29,8 @@ def get_documents(db: Session, skip: int = 0, limit: int = 10):
     return db.query(models.Document).offset(skip).limit(limit).all()
 
 
-def create_user_document(db: Session, document: schemas.DocumentCreate):
-    db_document = models.Document(**document.dict())
+def create_user_document(db: Session, document: schemas.DocumentCreate, user_id: int):
+    db_document = models.Document(**document.dict(), owner_id=user_id)
     db.add(db_document)
     db.commit()
     db.refresh(db_document)

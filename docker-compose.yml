@@ -20,8 +20,6 @@ services:
   db:
     image: postgres:12-alpine
     restart: always
-    volumes:
-    - db_data
     environment:
       - POSTGRES_DB=db
       - POSTGRES_USER=andrii
