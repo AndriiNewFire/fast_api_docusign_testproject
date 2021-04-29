@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from pydantic import BaseModel
 
@@ -9,7 +9,6 @@ Declared also pydantic version of the structure for testing purposes
 
 class DocumentBase(BaseModel):
     title: str
-    date: datetime = datetime.datetime.utcnow
 
 
 class DocumentCreate(DocumentBase):

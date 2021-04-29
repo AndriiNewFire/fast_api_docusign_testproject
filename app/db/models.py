@@ -14,7 +14,7 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
 
-    documents = relationship('documents', back_populates='owner')
+    documents = relationship('Document', back_populates='owner')
 
 
 class Document(Base):
@@ -22,7 +22,6 @@ class Document(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, default='Default Title', index=True)
-    date = Column(DateTime, default=datetime.datetime.utcnow)
     owner_id = Column(Integer, ForeignKey('users.id'))
 
-    owner = relationship('users', back_populates='documents')
+    owner = relationship('User', back_populates='documents')

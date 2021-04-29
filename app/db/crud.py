@@ -1,5 +1,5 @@
-import models
-import schemas
+from db import models
+from db import schemas
 from sqlalchemy.orm import Session
 
 
