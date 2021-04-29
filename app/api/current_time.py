@@ -14,14 +14,14 @@ class CurrentTimeZone:
     List of possible timezones are available via this link - http://worldtimeapi.org/timezones
     """
 
-    @router.get("/cities")
+    @router.get("/test_functionality/city_schemes/all")
     def get_all_city_schemas(self):
         """
         Method to get all stored data of city_schemas requests
         """
         return cities_database
 
-    @router.post('/cities')
+    @router.post('/test_functionality/city_schemes/add_scheme')
     def get_city_scheme_timezone_and_append_db(self, city: CitySchema):
         """
         Method to get a datetime and append the database with it
@@ -32,7 +32,7 @@ class CurrentTimeZone:
 
         return result
 
-    @router.get("/cities/{identifier}")
+    @router.get("/test_functionality/city_schemes/{identifier}")
     def get_specific_city_scheme(self, identifier: int = 0):
         """
         :param identifier: unique value of city_scheme in db
