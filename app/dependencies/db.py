@@ -11,3 +11,4 @@ session_local = sessionmaker(bind=engine,
                              autocommit=False,
                              )
 Base = declarative_base()
+metadata = Base.metadata

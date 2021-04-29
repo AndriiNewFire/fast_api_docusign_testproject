@@ -8,8 +8,6 @@ from db import crud, models, schemas
 
 router = InferringRouter()
 
-models.Base.metadata.create_all(bind=engine)
-
 
 @cbv(router)
 class UserAndDocumentsManagement:
