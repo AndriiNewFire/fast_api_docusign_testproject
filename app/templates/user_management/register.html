@@ -23,7 +23,7 @@
   <main role="main">
     <section class="jumbotron text-center">
       <div class="container">
-        <h1 class="jumbotron-heading">Register in here!</h1>
+        <h1 class="jumbotron-heading">Register here!</h1>
       </div>
     </section>
   </main>
@@ -46,7 +46,7 @@
       <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password" />
     </div>
 
-    <button type="button"  class="btn btn-dark btn-lg btn-block login-btn mb-2 mt-2" id="but" >Log in</button>
+    <button type="button"  class="btn btn-dark btn-lg btn-block login-btn mb-2 mt-2" id="but" >Register</button>
 
   </form>
 
@@ -63,25 +63,35 @@
   <div class="container text-center">
     <p>Copyright Andrii Divnych</p>
     <p class="float-right">
-    <p>Oh hi:)!</p>
   </div>
 </footer>
 </html>
 
-
 <script>
+  const postUser = () => {
+    fetch('http://0.0.0.0:8000/users/', {
+        method: 'POST',
+        body: JSON.stringify({
+            email: document.getElementById('exampleInputEmail').value,
+            password: document.getElementById("exampleInputPassword").value
+        }),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            post_resp = data;
+            console.log(post_resp);
+            window.location.href = '/users';
+        })
+        .catch(error => console.log(error));
+
+};
   $(document).ready(function(){
-    const Url='http://127.0.0.1:8000/users/'
     $("#but").click(function(){
-      const data={
-                  'email': document.getElementById('exampleInputEmail').value,
-                  'password': document.getElementById("exampleInputPassword").value
-                  }
-      console.log(data)
-      $.post(Url, data, function (data,status){
-        console.log(`${data} and status is ${status}`)
-      });
+      postUser();
     });
     });
 </script>
-  <br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
