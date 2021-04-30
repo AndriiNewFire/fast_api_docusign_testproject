@@ -1,0 +1,19 @@
+[run]
+omit =
+    /venv/*
+    **/migrations/*
+    **/.pytest_cache/**
+    **/tests/**
+    **/__init__.py
+    **/alembic/**
+    **/venv/**
+
+[report]
+omit =
+    /venv/*
+    **/migrations/*
+    **/.pytest_cache/**
+    **/tests/**
+    **/__init__.py
+    **/alembic/**
+    **/venv/**
