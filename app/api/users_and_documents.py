@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import Depends, HTTPException
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
@@ -22,7 +24,7 @@ class UserAndDocumentsManagement:
             raise HTTPException(status_code=400, detail='Email exists')
         return crud.create_user(db=db, user=user)
 
-    @router.get('/users/', response_model=list[user_and_documents_schemes.User])
+    @router.get('/users/', response_model=List[user_and_documents_schemes.User])
     def read_users(self, skip: int = 0,
                    limit: int = 10,
                    db: Session = Depends(get_db)):
