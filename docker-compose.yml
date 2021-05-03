@@ -1,6 +1,14 @@
 version: "3"
 
 services:
+  db:
+    image: postgres:12
+    restart: always
+    environment:
+      - POSTGRES_DB=db
+      - POSTGRES_USER=andrii
+      - POSTGRES_PASSWORD=password
+
   app:
     build:
       context: .
@@ -8,7 +16,7 @@ services:
       - "8000:8000"
     volumes:
       - ./app:/app
-    command: sh -c "uvicorn main:app --reload"
+    command: sh -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
     environment:
       - DB_HOST=db
       - DB_NAME=db
@@ -17,10 +25,4 @@ services:
     depends_on:
       - db
 
-  db:
-    image: postgres:12
-    restart: always
-    environment:
-      - POSTGRES_DB=db
-      - POSTGRES_USER=andrii
-      - POSTGRES_PASSWORD=password
+
