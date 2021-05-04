@@ -1,8 +1,9 @@
 from typing import List
 
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, Request
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
+from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from db.user_and_documents_management import crud
@@ -11,12 +12,21 @@ from dependencies.db import get_db
 
 
 router = InferringRouter()
+templates = Jinja2Templates('templates/user_management')
 
 
 @cbv(router)
 class UserAndDocumentsManagement:
 
-    @router.post('/users/', response_model=user_and_documents_schemes.User)
+    @router.get("/")
+    def home(self, request: Request):
+        return templates.TemplateResponse('home.html', {'request': request},)
+
+    @router.get("/register")
+    def register(self, request: Request):
+        return templates.TemplateResponse('register.html', {'request': request}, )
+
+    @router.post('/users/add', response_model=user_and_documents_schemes.User)
     def create_user(self, user: user_and_documents_schemes.UserCreate,
                     db: Session = Depends(get_db)):
         db_user = crud.get_user_by_email(db, email=user.email)
