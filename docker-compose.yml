@@ -8,6 +8,8 @@ services:
       - POSTGRES_DB=db
       - POSTGRES_USER=andrii
       - POSTGRES_PASSWORD=password
+    volumes:
+      - data:/var/lib/postgresql/data
 
   app:
     build:
@@ -25,4 +27,6 @@ services:
     depends_on:
       - db
 
+volumes:
+  data:
 
