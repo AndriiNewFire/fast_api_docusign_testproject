@@ -51,5 +51,32 @@
     <button type="button"  class="btn btn-dark btn-lg btn-block login-btn mb-2 mt-2" id="but" >Log in</button>
 
   </form>
+
+  <script>
+    const loginUser = () => {
+      fetch('http://0.0.0.0:8000/users/add', {
+          method: 'POST',
+          body: JSON.stringify({
+              email: document.getElementById('exampleInputEmail').value,
+              password: document.getElementById("exampleInputPassword").value
+          }),
+          headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+          },
+      })
+          .then(response => response.json())
+          .then(data => {
+              post_resp = data;
+              console.log(post_resp);
+              window.location.href = '/';
+          })
+          .catch(error => console.log(error));
+  
+  };
+    $(document).ready(function(){
+      $("#but").click(function(){
+        loginUser();
+      });
+  </script>
 </html>
   <br><br><br><br><br><br><br><br><br><br><br><br><br>
