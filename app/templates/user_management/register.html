@@ -49,27 +49,11 @@
     <button type="button"  class="btn btn-dark btn-lg btn-block login-btn mb-2 mt-2" id="but" >Register</button>
 
   </form>
-
-  <footer class="text-muted">
-    <style>
-    footer {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height:100px;
-      }
-   </style>
-  <div class="container text-center">
-    <p>Copyright Andrii Divnych</p>
-    <p class="float-right">
-  </div>
-</footer>
 </html>
 
 <script>
   const postUser = () => {
-    fetch('http://0.0.0.0:8000/users/add', {
+    fetch('http://0.0.0.0:8000/users/', {
         method: 'POST',
         body: JSON.stringify({
             email: document.getElementById('exampleInputEmail').value,
@@ -91,7 +75,6 @@
   $(document).ready(function(){
     $("#but").click(function(){
       postUser();
-    });
     });
 </script>
   <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
