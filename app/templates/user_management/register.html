@@ -82,7 +82,6 @@
         .then(response => response.json())
         .then(data => {
             post_resp = data;
-            console.log(post_resp);
             window.location.href = '/';
         })
         .catch(error => console.log(error));

@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Response
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from fastapi.security import OAuth2PasswordRequestForm
@@ -10,6 +10,7 @@ from db.user_and_documents_management import crud
 from db.user_and_documents_management.authentication import get_current_user, authenticate_user
 from db.user_and_documents_management.crud import get_user_by_email, delete_user
 from dependencies.authentication_dependencies import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
+from exceptions.exceptions import credentials_exception
 from schemes import user_and_documents_schemes
 from schemes.user_and_documents_schemes import User
 from dependencies.db import get_db
@@ -21,7 +22,7 @@ router = InferringRouter()
 @cbv(router)
 class UserAndDocumentsManagement:
 
-    @router.get('/api/testing/get_current_user/')
+    @router.get('/api/users/me', response_model=user_and_documents_schemes.User)
     def test(self, current_user: User = Depends(get_current_user)):
         return current_user
 
@@ -30,15 +31,11 @@ class UserAndDocumentsManagement:
                     db: Session = Depends(get_db)):
         user = authenticate_user(form_data.username, form_data.password, db)
         if not user:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect username or password",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
+            raise credentials_exception
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = create_access_token(data={'sub': user.email}, expires_delta=access_token_expires)
 
-        return {"access_token": access_token, 'token_type': 'bearer'}
+        return {"access_token": access_token, 'token_type': 'bearer', 'email': form_data.username}
 
     # Endpoint to get all available users
     @router.get('/users/', response_model=list[user_and_documents_schemes.User])
@@ -60,6 +57,7 @@ class UserAndDocumentsManagement:
             raise HTTPException(status_code=404, detail="User not found, please register")
         return user
 
+    # Endpoint to delete user account based on the email
     @router.delete('/users/{user_email}')
     def delete_user(self, user_email: str, db: Session = Depends(get_db), ):
 

@@ -30,7 +30,7 @@
   </main>
   <div class="modal-body">
   <div class="modal-body">
-    <form class='login-form'>
+    <form class='login-form' enctype="application/x-www-form-urlencoded" id="form">
       <style>
       .login-form {
         max-width:500px;
@@ -53,29 +53,61 @@
   </form>
 
   <script>
+
+    function JSON_to_URLEncoded(element,key,list){
+      var list = list || [];
+      if(typeof(element)=='object'){
+        for (var idx in element)
+          JSON_to_URLEncoded(element[idx],key?key+'['+idx+']':idx,list);
+      } else {
+        list.push(key+'='+encodeURIComponent(element));
+      }
+      return list.join('&');
+      } 
+      
+    const http_headers = {
+      'Content-type': 'application/x-www-form-urlencoded',}
+    
     const loginUser = () => {
-      fetch('http://0.0.0.0:8000/users/add', {
-          method: 'POST',
-          body: JSON.stringify({
-              email: document.getElementById('exampleInputEmail').value,
-              password: document.getElementById("exampleInputPassword").value
-          }),
-          headers: {
-              'Content-type': 'application/json; charset=UTF-8',
-          },
-      })
-          .then(response => response.json())
-          .then(data => {
-              post_resp = data;
-              console.log(post_resp);
-              window.location.href = '/';
-          })
-          .catch(error => console.log(error));
-  
-  };
+        fetch('http://0.0.0.0:8000/api/token', {
+            method: 'POST',
+            body: JSON_to_URLEncoded({
+                  username: document.getElementById('exampleInputEmail').value,
+                  password: document.getElementById('exampleInputPassword').value
+                    }),       
+            headers: http_headers
+        })  
+            .then(response => response.json())
+            .then(response => {
+                // Here you prsed JSON and can work with it as with normal JS object
+                console.log(response)
+                
+                // destructure response data into separate variables
+                const {access_token, email, token_type} = response;
+
+                // set resp values into cookies and HTTP headers object
+
+                setCookie('access_token', access_token);
+                setCookie('email', email);
+                http_headers['Authorization'] = `${token_type} ${access_token}`
+                window.location.href = '/users/me';
+                
+            })
+            .catch(error => console.log(error));
+    };
+
+    const setCookie = (key, value) => {
+        document.cookie = `${key}=${value}`
+        // This is called template string
+        // all variables in ${} will be converted to string and combined in one general string
+    };
+
+
+
     $(document).ready(function(){
       $("#but").click(function(){
         loginUser();
+      });
       });
   </script>
 </html>
