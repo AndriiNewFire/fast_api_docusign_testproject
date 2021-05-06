@@ -1,4 +1,7 @@
+from datetime import timedelta
+
 from db.user_and_documents_management import models
+from db.user_and_documents_management.utilities import get_password_hash
 from schemes import user_and_documents_schemes
 from sqlalchemy.orm import Session
 
@@ -17,12 +20,18 @@ def get_users(db: Session, skip: int = 0, limit: int = 10):
 
 def create_user(db: Session, user: user_and_documents_schemes.UserCreate):
 
-    fake_hashed_password = user.password + 'lol'
+    fake_hashed_password = get_password_hash(user.password)
     db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
+def delete_user(db: Session, user):
+    db.delete(user)
+    db.commit()
+    return user
 
 
 def get_documents(db: Session, skip: int = 0, limit: int = 10):

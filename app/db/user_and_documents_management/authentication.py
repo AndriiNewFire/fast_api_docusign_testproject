@@ -3,24 +3,22 @@ from sqlalchemy.orm import Session
 from jose import jwt, JWTError
 
 from db.user_and_documents_management.crud import get_user_by_email
+from db.user_and_documents_management.utilities import verify_password
 from dependencies.db import get_db
-from dependencies.authentication_dependencies import pwd_context, oauth2_scheme, SECRET_KEY, ALGORITHM
+from dependencies.authentication_dependencies import oauth2_scheme, SECRET_KEY, ALGORITHM
 from exceptions.exceptions import credentials_exception
 from schemes.authentication_scheme import TokenData
 
 
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-
 def authenticate_user(username: str,
+                      password: str,
                       db: Session = Depends(get_db)):
 
     user = get_user_by_email(db, email=username)
+    if not user:
+        return False
+    if not verify_password(password, user.hashed_password):
+        return False
     return user
 
 

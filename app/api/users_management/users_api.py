@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from db.user_and_documents_management import crud
 from db.user_and_documents_management.authentication import get_current_user, authenticate_user
+from db.user_and_documents_management.crud import get_user_by_email, delete_user
 from dependencies.authentication_dependencies import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token
 from schemes import user_and_documents_schemes
 from schemes.user_and_documents_schemes import User
@@ -20,14 +21,14 @@ router = InferringRouter()
 @cbv(router)
 class UserAndDocumentsManagement:
 
-    @router.get('/testing/users/')
+    @router.get('/api/testing/get_current_user/')
     def test(self, current_user: User = Depends(get_current_user)):
         return current_user
 
-    @router.post("/token")
+    @router.post("/api/token")
     async def login(self, form_data: OAuth2PasswordRequestForm = Depends(),
                     db: Session = Depends(get_db)):
-        user = authenticate_user(form_data.username, db)
+        user = authenticate_user(form_data.username, form_data.password, db)
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -58,6 +59,14 @@ class UserAndDocumentsManagement:
         if not user:
             raise HTTPException(status_code=404, detail="User not found, please register")
         return user
+
+    @router.delete('/users/{user_email}')
+    def delete_user(self, user_email: str, db: Session = Depends(get_db), ):
+
+        user = get_user_by_email(db, email=user_email)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found, please register")
+        return delete_user(db, user)
 
     # Endpoint to create user account
     @router.post('/users/', response_model=user_and_documents_schemes.User)
