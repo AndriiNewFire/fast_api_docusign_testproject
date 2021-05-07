@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Andrii Divnych</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav ml-auto">
+        <a class="nav-item nav-link active" href="/login">Log in</a>
+      </div>
+    </div>
+  </nav>
+  </header>
+  <main role="main">
+    <section class="jumbotron text-center">
+      <div class="container">
+        <h1 class="jumbotron-heading">Thank you for staying with us</h1>
+        <h3 class="jumbotron-heading">Now, please log in to explore lessons</h3>
+      </div>
+    </section>
+  </main>
+  <div class="modal-body">
+  <div class="modal-body">
+    <form class='login-form' enctype="application/x-www-form-urlencoded" id="form">
+      <style>
+      .login-form {
+        max-width:500px;
+        margin:auto;
+      }
+      </style>
+
+    <div class="form-group">
+      <label for="exampleInputEmail">Email address</label>
+      <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter email">
+    </div>
+
+    <div class="form-group">
+      <label for="exampleInputPassword">Password</label>
+      <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password" />
+    </div>
+
+    <button type="button"  class="btn btn-dark btn-lg btn-block login-btn mb-2 mt-2" id="but" >Log in</button>
+
+  </form>
+
+  <script>
+
+    function JSON_to_URLEncoded(element,key,list){
+      var list = list || [];
+      if(typeof(element)=='object'){
+        for (var idx in element)
+          JSON_to_URLEncoded(element[idx],key?key+'['+idx+']':idx,list);
+      } else {
+        list.push(key+'='+encodeURIComponent(element));
+      }
+      return list.join('&');
+      } 
+      
+    const http_headers = {
+      'Content-type': 'application/x-www-form-urlencoded',}
+    
+    const loginUser = () => {
+        fetch('http://0.0.0.0:8000/api/token', {
+            method: 'POST',
+            body: JSON_to_URLEncoded({
+                  username: document.getElementById('exampleInputEmail').value,
+                  password: document.getElementById('exampleInputPassword').value
+                    }),       
+            headers: http_headers
+        })  
+            .then(response => response.json())
+            .then(response => {
+                // Here you prsed JSON and can work with it as with normal JS object
+                console.log(response)
+                
+                // destructure response data into separate variables
+                const {access_token, email, token_type} = response;
+
+                // set resp values into cookies and HTTP headers object
+
+                setCookie('access_token', access_token);
+                setCookie('email', email);
+                http_headers['Authorization'] = `${token_type} ${access_token}`
+                window.location.href = '/home';
+                
+            })
+            .catch(error => console.log(error));
+    };
+
+    const setCookie = (key, value) => {
+        document.cookie = `${key}=${value}`
+        // This is called template string
+        // all variables in ${} will be converted to string and combined in one general string
+    };
+
+
+
+    $(document).ready(function(){
+      $("#but").click(function(){
+        loginUser();
+      });
+      });
+  </script>
+</html>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br>

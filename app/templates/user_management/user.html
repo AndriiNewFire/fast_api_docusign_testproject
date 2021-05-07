@@ -15,23 +15,61 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav ml-auto">
-        <a class="nav-item nav-link active" href="/login">Log in</a>
       </div>
     </div>
   </nav>
   </header>
-  <main role="main">
+  <body>
     <section class="jumbotron text-center">
       <div class="container">
-        <h1 class="jumbotron-heading">This is test homepage</h1>
-        <p class="lead text-muted">Have a great day</p>
+        <h1 class="jumbotron-heading">Information about the user</h1>
         <br>
-          <a class="btn btn-dark" href="/register">Register here!</a>
-          <a class="btn btn-dark" href="/login">Login here!</a>
-          <br><br>
-          <a class="btn btn-dark" href="/docs">Swagger documentation!</a>
-          <br>
+        <h3 id='email'></h3>
+        <h5 id='id'></h5>
+        <h5 id='documents-num'></h5>
+        <a class="btn btn-dark" href="#">Sign a document!</a>
+        <a class="btn btn-danger" href="/docs">Swagger! </a>
+      </div>
+      <br>
+      <div class="container">
+        <h1 class="jumbotron-heading">Check all your documents here here</h1>
+        <br>
+
       </div>
     </section>
-  </main>
+
+      <div id="lessons" class="row">
+      </div>
+
+
+
+  <script>
+
+    const email = document.cookie.split('; ').find(row => row.startsWith('email=')).split('=')[1]
+    const token = document.cookie.split('; ').find(row => row.startsWith('access_token=')).split('=')[1]
+    
+
+    const getUser = () => {
+    fetch('http://0.0.0.0:8000/api/users/me', {
+      method: 'GET',
+      headers: {
+        "Authorization": 'Bearer ' + token,
+      }
+    })
+        .then(response => response.json())
+        .then(data => {
+            get_resp = data;
+            $('#email').text('Your email is - ' + data.email);
+            $('#id').text('Your id in the system is - ' + data.id);
+            $('#documents-num').text('Number of your signed documents is - ' + data.documents.length);
+
+        })
+        .catch(error => console.log(error));
+};
+
+    
+    getUser()
+
+  </script>
 </html>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br>

@@ -2,10 +2,12 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.users_management import UI_user_endpoints, users_api
+from api.documents import documents
+
 from api import (
     addition,
     current_time,
-    users_and_documents,
                 )
 
 
@@ -19,9 +21,12 @@ def configuration():
                         allow_methods=["*"],
                         allow_headers=["*"],
                         )
+
     app.include_router(addition.router)
     app.include_router(current_time.router)
-    app.include_router(users_and_documents.router)
+    app.include_router(UI_user_endpoints.router)
+    app.include_router(users_api.router)
+    app.include_router(documents.router)
 
     return app
 

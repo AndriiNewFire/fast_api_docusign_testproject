@@ -14,6 +14,8 @@ alembic = "*"
 psycopg2-binary = "*"
 sqlalchemy = "*"
 pytest = "*"
+python-jose = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
 
