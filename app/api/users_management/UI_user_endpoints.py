@@ -23,6 +23,6 @@ class UserAndDocumentsManagement:
     def login_user_to_the_system_endpoint(self, request: Request):
         return templates.TemplateResponse('login.html', {'request': request}, )
 
-    @router.get("/users/me")
+    @router.get("/home")
     def display_user(self, request: Request):
         return templates.TemplateResponse('user.html', {'request': request}, )

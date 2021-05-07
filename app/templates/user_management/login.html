@@ -90,7 +90,7 @@
                 setCookie('access_token', access_token);
                 setCookie('email', email);
                 http_headers['Authorization'] = `${token_type} ${access_token}`
-                window.location.href = '/users/me';
+                window.location.href = '/home';
                 
             })
             .catch(error => console.log(error));

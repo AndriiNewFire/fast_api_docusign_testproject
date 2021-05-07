@@ -48,8 +48,8 @@ class UserAndDocumentsManagement:
 
     # Endpoint to get specific user
     @router.get('/users/{user_id}', response_model=user_and_documents_schemes.User)
-    def get_all_available_user_accounts(self, user_id: int,
-                                        db: Session = Depends(get_db),):
+    def get_specific_user_account(self, user_id: int,
+                                  db: Session = Depends(get_db),):
 
         user = crud.get_user(db, user_id=user_id)
 
